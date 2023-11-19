@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useAccount, useNetwork } from "wagmi"
+import { evmChainData } from "../lib/data"
 
 const WalletContext = createContext(null)
 
@@ -16,11 +17,12 @@ const dummyCoins = [{ id: 1, name: 'ETH', icon: "/images/eth.png" }, { id: 2, na
 export default function Providers({ children }) {
   const [connectedWallet, setConnectedWallet] = useState(null)
 
-  const [coinAllocation, setCoinAllocation] = useState(dummyCoins[0]);
+  const [coinAllocation, setCoinAllocation] = useState(evmChainData[0].tokens[0]);
   const [amountPerPeriod, setAmountPerPeriod] = useState(100);
   const [recurringCycle, setRecurringCycle] = useState("Daily");
   const [openDropDown, setOpenDropDown] = useState(false)
   const [successData, setSuccessData] = useState(null)
+  const [chainData, setChainData] = useState(evmChainData[0])
   
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -31,6 +33,10 @@ export default function Providers({ children }) {
             address,
             chain
         })
+
+        const c = evmChainData.find(c => c.chainId === chain.id)
+        setChainData(c)
+        setCoinAllocation(c.tokens[0])
     } else {
         setConnectedWallet(null)
     }
@@ -46,7 +52,8 @@ export default function Providers({ children }) {
         recurringCycle, setRecurringCycle,
         openDropDown, setOpenDropDown,
         dummyCoins,
-        successData, setSuccessData
+        successData, setSuccessData,
+        chainData, setChainData
       }}
     >
         {children}

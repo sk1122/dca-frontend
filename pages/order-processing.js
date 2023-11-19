@@ -25,7 +25,7 @@ const OrderProcessing = () => {
   const { data, isLoading, isError, isSuccess, write } = useContractWrite(config)
 
   const execute = async () => {
-    write()
+    write?.()
   }
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const OrderProcessing = () => {
           <div className="flex space-x-6 align-center justify-center">
             <div className="flex space-x-2">
               <Image src="/images/bitcoin.png" height={24} width={24} />
-              <div>10.0 USDC.e</div>
+              <div>10.0 USDC</div>
             </div>
             <div className="mt-2">
               <Image src="/images/arrow.png" height={12} width={12} />

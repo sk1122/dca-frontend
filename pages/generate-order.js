@@ -14,16 +14,7 @@ const CreateYourPlan = () => {
   const { connectedWallet, coinAllocation, setCoinAllocation,
     amountPerPeriod, setAmountPerPeriod,
     recurringCycle, setRecurringCycle,
-    openDropDown, setOpenDropDown, dummyCoins } = useData()
-
-  useEffect(() => {
-    if (router.query.id) {
-
-      const s = dummyCoins.filter(i => i.id == router.query.id)
-      console.warn(s)
-      setCoinAllocation(s[0])
-    }
-  }, [router])
+    openDropDown, setOpenDropDown, dummyCoins, chainData } = useData()
 
 
   const handleCoinAllocationChange = (event) => {
@@ -59,16 +50,16 @@ const CreateYourPlan = () => {
               <div className="flex flex-col  mb-5 relative">
                 <label className="mr-3 text-sm mb-2 font-medium">Coin allocation</label>
                 <div className="flex space-x-2 p-2 bg-gray-200 rounded-md cursor-pointer" onClick={() => onArrowClick()}>
-                  <Image src={coinAllocation?.icon} width={25} height={25} />
+                  <Image src={coinAllocation?.logoURI} width={25} height={25} />
                   <span>{coinAllocation?.name}</span>
                   <span><Image src={"/images/down.png"} className={openDropDown ? 'rotate-180' : ''} width={20} height={20} /></span>
                 </div>
                 {
                   openDropDown &&
                   <div className="absolute bg-white w-full top-16 border  rounded-md">
-                    {dummyCoins.map(i => {
+                    {chainData.tokens.map(i => {
                       return <div className="flex cursor-pointer space-x-2 my-2 border-b p-2" onClick={() => handleCoinAllocationChange(i)}>
-                        <Image src={i.icon} width={25} height={25} />
+                        <Image src={i.logoURI} width={25} height={25} />
                         <span>{i.name}</span>
                       </div>
                     })}
@@ -121,7 +112,7 @@ const CreateYourPlan = () => {
                 <div className="bg-green-500 rotate-45" style={{ minWidth: '10px', minHeight: '10px', maxWidth: '10px', maxHeight: '10px' }}></div>
                 <div>First Auto-Invest Date</div>
               </div>
-              <div>2023-12-01 13:00</div>
+              <div>{(new Date(new Date().setDate(new Date().getDate() + 1))).toDateString()}</div>
             </div>
             <div className="px-6 flex items-center justify-between my-8">
               <div className="flex items-center space-x-2">
