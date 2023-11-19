@@ -4,17 +4,43 @@ import { useRouter } from "next/router";
 import { useEffect } from "react"
 import CoinWithName from "../components/common/CoinwithName";
 import Loader from "../components/common/Loader";
+import { useData } from "../providers/Context";
+import { usePrepareContractWrite, useContractWrite } from "wagmi"
 
 const OrderProcessing = () => {
   const router = useRouter()
+
+  const { connectedWallet, coinAllocation, setCoinAllocation,
+    amountPerPeriod, setAmountPerPeriod,
+    recurringCycle, setRecurringCycle,
+    openDropDown, setOpenDropDown, dummyCoins } = useData()
+
+  const { config } = usePrepareContractWrite({
+    address: "",
+    abi: [],
+    functionName: "",
+    args: []
+  })
+
+  const { data, isLoading, isError, isSuccess, write } = useContractWrite(config)
+
+  const execute = async () => {
+    write()
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      router.push('/order-success')
-    }, 5000);
+    execute()
   }, [])
+
+  useEffect(() => {
+    if(!isLoading && isSuccess) {
+      
+    }
+  }, [isLoading, isSuccess, isError])
+
   return (
     <div className="py-32">
-      <div className="bg-white pb-16 bg-white rounded-2xl shadow-lg w-1/2 mx-auto">
+      <div className="bg-white pb-16 rounded-2xl shadow-lg w-1/2 mx-auto">
         <CoinWithName name="BTH" icon={"/images/bitcoin.png"} />
         <div className="mx-auto text-center mt-16">
           <div className="text-center mx-auto"><Loader /></div>

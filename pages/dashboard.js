@@ -4,12 +4,12 @@ import { useState } from "react"
 
 export const dummyData = [{
   id: 1,
-  name: "BTH",
+  name: "ETH",
   '6M': 12,
   '1YR': 168,
   '3YR': -324,
   '5YR': 213,
-  icon: "/images/bitcoin.png"
+  icon: "/images/eth.png"
 }, {
   id: 2,
   name: "ETH",
@@ -66,7 +66,7 @@ const DataComponent = ({ item }) => {
       </td>
       {
         ["5YR", "3YR", "1YR", "6M"].map(i => {
-          return <td onClick={() => changeTerm(i)}><span className={`bg-gray-200 px-3 py-2 rounded-md ${selectedReturn === i ? 'text-orange-500 font-bold' : ''}`} >{i}</span></td>
+          return <td onClick={() => changeTerm(i)}><span className={`cursor-pointer bg-gray-200 px-3 py-2 rounded-md ${selectedReturn === i ? 'text-orange-500 font-bold' : ''}`} >{i}</span></td>
         })
       }
       <td className="text-right">

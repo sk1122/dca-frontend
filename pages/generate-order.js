@@ -4,16 +4,17 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useData } from "../providers/Context";
+import { ConnectButtonDCA } from "../components/common/ConnectButton";
 
-
-const dummyCoins = [{ id: 1, name: 'BTC', icon: "/images/bitcoin.png" }, { id: 2, name: "ETH", icon: "/images/eth.png" }]
 
 const CreateYourPlan = () => {
   const router = useRouter();
-  const [coinAllocation, setCoinAllocation] = useState(dummyCoins[0]);
-  const [amountPerPeriod, setAmountPerPeriod] = useState(100);
-  const [recurringCycle, setRecurringCycle] = useState("Daily");
-  const [openDropDown, setOpenDropDown] = useState(false)
+
+  const { connectedWallet, coinAllocation, setCoinAllocation,
+    amountPerPeriod, setAmountPerPeriod,
+    recurringCycle, setRecurringCycle,
+    openDropDown, setOpenDropDown, dummyCoins } = useData()
 
   useEffect(() => {
     if (router.query.id) {
@@ -50,14 +51,14 @@ const CreateYourPlan = () => {
 
   return (
     <div className="py-32">
-      <div className="bg-white bg-white rounded-2xl shadow-lg w-1/2 mx-auto">
+      <div className="bg-white rounded-2xl shadow-lg w-1/2 mx-auto">
         <div className="flex ">
           <div className="flex flex-col w-7/12 mt-5 ">
             <h2 className="text-3xl font-bold mb-5 pb-2 border-b px-10">Create your plan</h2>
             <div className="flex space-x-10 px-10">
               <div className="flex flex-col  mb-5 relative">
                 <label className="mr-3 text-sm mb-2 font-medium">Coin allocation</label>
-                <div className="flex space-x-2 p-2 bg-gray-200 rounded-md" onClick={() => onArrowClick()}>
+                <div className="flex space-x-2 p-2 bg-gray-200 rounded-md cursor-pointer" onClick={() => onArrowClick()}>
                   <Image src={coinAllocation?.icon} width={25} height={25} />
                   <span>{coinAllocation?.name}</span>
                   <span><Image src={"/images/down.png"} className={openDropDown ? 'rotate-180' : ''} width={20} height={20} /></span>
@@ -66,7 +67,7 @@ const CreateYourPlan = () => {
                   openDropDown &&
                   <div className="absolute bg-white w-full top-16 border  rounded-md">
                     {dummyCoins.map(i => {
-                      return <div className="flex space-x-2 my-2 border-b p-2" onClick={() => handleCoinAllocationChange(i)}>
+                      return <div className="flex cursor-pointer space-x-2 my-2 border-b p-2" onClick={() => handleCoinAllocationChange(i)}>
                         <Image src={i.icon} width={25} height={25} />
                         <span>{i.name}</span>
                       </div>
@@ -129,13 +130,15 @@ const CreateYourPlan = () => {
               <div>--USDT</div>
             </div>
             <div className="text-center my-8">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  w-8/12"
-                onClick={handleSubmit}
-              >
-                Deposit
-              </button>
+              {connectedWallet ? 
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  w-8/12"
+                  onClick={handleSubmit}
+                >
+                  Deposit
+                </button>
+              : <ConnectButtonDCA />}
             </div>
           </div>
         </div>
