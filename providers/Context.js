@@ -20,6 +20,7 @@ export default function Providers({ children }) {
   const [amountPerPeriod, setAmountPerPeriod] = useState(100);
   const [recurringCycle, setRecurringCycle] = useState("Daily");
   const [openDropDown, setOpenDropDown] = useState(false)
+  const [successData, setSuccessData] = useState(null)
   
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -44,7 +45,8 @@ export default function Providers({ children }) {
         amountPerPeriod, setAmountPerPeriod,
         recurringCycle, setRecurringCycle,
         openDropDown, setOpenDropDown,
-        dummyCoins
+        dummyCoins,
+        successData, setSuccessData
       }}
     >
         {children}

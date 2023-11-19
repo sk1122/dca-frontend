@@ -13,7 +13,7 @@ const OrderProcessing = () => {
   const { connectedWallet, coinAllocation, setCoinAllocation,
     amountPerPeriod, setAmountPerPeriod,
     recurringCycle, setRecurringCycle,
-    openDropDown, setOpenDropDown, dummyCoins } = useData()
+    openDropDown, setOpenDropDown, dummyCoins, successData, setSuccessData } = useData()
 
   const { config } = usePrepareContractWrite({
     address: "",
@@ -34,7 +34,7 @@ const OrderProcessing = () => {
 
   useEffect(() => {
     if(!isLoading && isSuccess) {
-      
+
     }
   }, [isLoading, isSuccess, isError])
 
