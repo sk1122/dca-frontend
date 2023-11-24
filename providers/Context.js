@@ -22,9 +22,14 @@ const dummyCoins = [
 export default function Providers({ children }) {
   const [connectedWallet, setConnectedWallet] = useState(null);
 
+  const [usdc, setUSDC] = useState(
+    evmChainData[0].tokens.find(x => x.name === "USDC")
+  )
   const [coinAllocation, setCoinAllocation] = useState(
     evmChainData[0].tokens[0]
   );
+  const [times, setTimes] = useState(1)
+  const [prices, setPrices] = useState({ "ETH": 1 })
   const [amountPerPeriod, setAmountPerPeriod] = useState(100);
   const [recurringCycle, setRecurringCycle] = useState("WEEKLY");
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -46,10 +51,27 @@ export default function Providers({ children }) {
       setChainData(c);
       console.log(coinAllocation);
       setCoinAllocation(c.tokens[0]);
+      setUSDC(c.tokens.find(x => x.name === "USDC"))
     } else {
       setConnectedWallet(null);
     }
   }, [address, chain]);
+
+  useEffect(() => {
+    (async () => {
+      const currentData = await fetch(
+        "https://api.coingecko.com/api/v3/coins/ethereum"
+      );
+      let currentPriceresponse = await currentData.json();
+    
+      const currentPrice = currentPriceresponse.market_data.current_price.usd;
+    
+      setPrices({
+        ...prices,
+        "ETH": currentPrice
+      })
+    })()
+  }, [])
 
   return (
     <WalletContext.Provider
@@ -71,6 +93,12 @@ export default function Providers({ children }) {
         setSuccessData,
         chainData,
         setChainData,
+        usdc,
+        setUSDC,
+        times,
+        setTimes,
+        prices,
+        setPrices
       }}
     >
       {children}

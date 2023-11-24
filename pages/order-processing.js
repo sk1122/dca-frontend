@@ -32,6 +32,8 @@ const OrderProcessing = () => {
     dummyCoins,
     successData,
     setSuccessData,
+    usdc,
+    times
   } = useData();
 
   const { config } = usePrepareContractWrite({
@@ -59,7 +61,7 @@ const OrderProcessing = () => {
   const execute = async () => {
     const hash = await writeAsync?.();
     setSuccessData(hash);
-    router.push("/order-success");
+    // router.push("/order-success");
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const OrderProcessing = () => {
   return (
     <div className="py-32">
       <div className="bg-white pb-16 rounded-2xl shadow-lg w-1/2 mx-auto">
-        <CoinWithName name="BTH" icon={"/images/bitcoin.png"} />
+        <CoinWithName name={coinAllocation.name} icon={coinAllocation.logoURI} />
         <div className="mx-auto text-center mt-16">
           <div className="text-center mx-auto">
             <Loader />
@@ -82,15 +84,15 @@ const OrderProcessing = () => {
           <div className="font-bold text-2xl my-8">Confirm Deposit</div>
           <div className="flex space-x-6 align-center justify-center">
             <div className="flex space-x-2">
-              <Image src="/images/bitcoin.png" height={24} width={24} />
+              <Image src={usdc.logoURI} height={24} width={24} />
               <div>10.0 USDC</div>
             </div>
             <div className="mt-2">
               <Image src="/images/arrow.png" height={12} width={12} />
             </div>
             <div className="flex space-x-2">
-              <Image src="/images/eth.png" height={24} width={24} />
-              <div>15.0 ETH</div>
+              <Image src={coinAllocation.logoURI} height={24} width={24} />
+              <div>{Number(amountPerPeriod) * Number(times)} {coinAllocation.name}</div>
             </div>
           </div>
           <div className="text-2xl  text-primary font-bold mt-4 pt-10">

@@ -33,7 +33,7 @@ const OrderSuccess = () => {
 
   return (
     <div className="py-32">
-      <div className="bg-white pb-16 bg-white rounded-2xl shadow-lg w-1/2 mx-auto">
+      <div className="bg-white pb-16 rounded-2xl shadow-lg w-1/2 mx-auto">
         <CoinWithName
           name={coinAllocation.name}
           icon={coinAllocation.logoURI}

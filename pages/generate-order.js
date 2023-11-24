@@ -14,7 +14,7 @@ const CreateYourPlan = () => {
   const { connectedWallet, coinAllocation, setCoinAllocation,
     amountPerPeriod, setAmountPerPeriod,
     recurringCycle, setRecurringCycle,
-    openDropDown, setOpenDropDown, dummyCoins, chainData } = useData()
+    openDropDown, setOpenDropDown, dummyCoins, chainData, prices, times, setTimes } = useData()
 
 
   const handleCoinAllocationChange = (event) => {
@@ -88,6 +88,18 @@ const CreateYourPlan = () => {
                 }
               </div>
             </div>
+
+            <div className="flex flex-col px-10 mb-5">
+              <label className="mr-3 text-sm font-medium mb-4">Recurring cycle</label>
+              <div className="flex space-x-4">
+              <input
+                  type="number"
+                  className="rounded-md p-2 bg-gray-200"
+                  value={`${times}`}
+                  onChange={(e) => setTimes(Number(e.target.value))}
+                />
+              </div>
+            </div>
             <div className="text-gray-500 px-10">Your orders will be filled everyday at 00:00 GMP</div>
 
           </div>
@@ -98,14 +110,14 @@ const CreateYourPlan = () => {
                 <div className="bg-yellow-500 rotate-45" style={{ minWidth: '10px', minHeight: '10px', maxWidth: '10px', maxHeight: '10px' }}></div>
                 <div>Created Time</div>
               </div>
-              <div>2023-11-01 12:42</div>
+              <div>{new Date().toDateString()}</div>
             </div>
             <div className="px-6 flex items-center justify-between my-8">
               <div className="flex items-center space-x-2">
                 <div className=" rotate-45" style={{ minWidth: '10px', minHeight: '10px', maxWidth: '10px', maxHeight: '10px' }}></div>
                 <div>Total Amount</div>
               </div>
-              <div>--</div>
+              <div>{(prices.ETH * (amountPerPeriod * times))} USDC</div>
             </div>
             <div className="px-6 flex items-center justify-between my-8">
               <div className="flex items-center space-x-2">
@@ -118,7 +130,7 @@ const CreateYourPlan = () => {
               <div className="flex items-center space-x-2">
                 <div>% Transaction Fee (0.2%)</div>
               </div>
-              <div>--USDT</div>
+              <div>{Math.floor((0.2 * (prices.ETH * (amountPerPeriod * times))) / 100)} USDC</div>
             </div>
             <div className="text-center my-8">
               {connectedWallet ? 

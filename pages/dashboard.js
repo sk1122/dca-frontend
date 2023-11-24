@@ -28,7 +28,7 @@ const getPercentageChange = async (duration) => {
 
   const currentPrice = currentPriceresponse.market_data.current_price.usd;
 
-  return (100 * currentPrice) / prevPrice - 100;
+  return Math.floor((100 * currentPrice) / prevPrice - 100);
 };
 
 export const dummyData = [
