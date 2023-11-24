@@ -19,14 +19,14 @@ export const getPercentageChange = async (duration) => {
     `https://api.coingecko.com/api/v3/coins/ethereum/history?date=${formattedDate}`
   );
   let prevPriceresponse = await data.json();
-  const prevPrice = prevPriceresponse.market_data.current_price.usd;
+  const prevPrice = prevPriceresponse.market_data?.current_price.usd;
 
   const currentData = await fetch(
     "https://api.coingecko.com/api/v3/coins/ethereum"
   );
   let currentPriceresponse = await currentData.json();
 
-  const currentPrice = currentPriceresponse.market_data.current_price.usd;
+  const currentPrice = currentPriceresponse.market_data?.current_price.usd;
 
   return Math.floor((100 * currentPrice) / prevPrice - 100);
 };
@@ -74,9 +74,9 @@ const DataComponent = ({ item }) => {
           {showSelectedReturn(item)}%
         </span>
       </td>
-      {["5YR", "3YR", "1YR", "6M"].map((i) => {
+      {["5YR", "3YR", "1YR", "6M"].map((i, idx) => {
         return (
-          <td onClick={() => changeTerm(i)}>
+          <td key={idx} onClick={() => changeTerm(i)}>
             <span
               className={`cursor-pointer bg-gray-200 px-3 py-2 rounded-md ${
                 selectedReturn === i ? "text-orange-500 font-bold" : ""
@@ -116,8 +116,8 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {dummyData.map((item) => (
-              <DataComponent item={item} />
+            {dummyData.map((item, idx) => (
+              <DataComponent key={idx} item={item} />
             ))}
           </tbody>
         </table>

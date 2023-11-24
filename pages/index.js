@@ -62,7 +62,7 @@ const BitcoinInvestmentCard = () => {
             <option value="5">5</option>
             <option value="10">10</option>
           </select>{" "}
-          times, you'd get
+          times, you&apos;d get
         </h2>
       </div>
       <div className="text-center border-t-2 w-full mt-10 border-dashed">

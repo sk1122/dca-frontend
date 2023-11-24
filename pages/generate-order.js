@@ -57,8 +57,8 @@ const CreateYourPlan = () => {
                 {
                   openDropDown &&
                   <div className="absolute bg-white w-full top-16 border  rounded-md">
-                    {chainData.tokens.map(i => {
-                      return <div className="flex cursor-pointer space-x-2 my-2 border-b p-2" onClick={() => handleCoinAllocationChange(i)}>
+                    {chainData.tokens.map((i, idx) => {
+                      return <div key={idx} className="flex cursor-pointer space-x-2 my-2 border-b p-2" onClick={() => handleCoinAllocationChange(i)}>
                         <Image src={i.logoURI} width={25} height={25} />
                         <span>{i.name}</span>
                       </div>
@@ -82,8 +82,8 @@ const CreateYourPlan = () => {
               <label className="mr-3 text-sm font-medium mb-4">Recurring cycle</label>
               <div className="flex space-x-4">
                 {
-                  ['Daily', 'Weekly', 'Monthly'].map(i => {
-                    return <div className={`cursor-pointer text-center rounded-md py-2 ${recurringCycle === i ? 'border-2 border-blue-500' : 'border'}`} onClick={() => handleRecurringCycleChange(i)} style={{ width: '100px' }}>{i}</div>
+                  ['Daily', 'Weekly', 'Monthly'].map((i, idx) => {
+                    return <div key={idx} className={`cursor-pointer text-center rounded-md py-2 ${recurringCycle === i ? 'border-2 border-blue-500' : 'border'}`} onClick={() => handleRecurringCycleChange(i)} style={{ width: '100px' }}>{i}</div>
                   })
                 }
               </div>

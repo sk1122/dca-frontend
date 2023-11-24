@@ -64,7 +64,7 @@ export default function Providers({ children }) {
       );
       let currentPriceresponse = await currentData.json();
     
-      const currentPrice = currentPriceresponse.market_data.current_price.usd;
+      const currentPrice = currentPriceresponse.market_data?.current_price.usd;
     
       setPrices({
         ...prices,
