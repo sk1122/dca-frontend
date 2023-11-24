@@ -2,8 +2,12 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
+import { useState } from "react";
+import { getPercentageChange } from "./dashboard";
 
 const BitcoinInvestmentCard = () => {
+  const [amount, setAmount] = useState("0");
+  const [selectedYears, setSelectedYears] = useState("0");
   return (
     <div className="flex flex-col items-center justify-center w-1/2 h-full  py-16 bg-white rounded-2xl shadow-lg ">
       <div>
@@ -16,6 +20,8 @@ const BitcoinInvestmentCard = () => {
             style={{
               width: "100px",
             }}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
           />
           {/* <select name="amount" id="amount" className='text-secondary'>
             <option value="1000">1000</option>
@@ -40,9 +46,7 @@ const BitcoinInvestmentCard = () => {
             id="transaction"
             className="text-secondary border-b-2 border-secondary border-dashed"
           >
-            <option value="1">Bitcoin</option>
-            <option value="2">Ether</option>
-            <option value="2">USDT</option>
+            <option value="1">Ether</option>
           </select>
           for
           <label htmlFor="years"></label>
@@ -50,6 +54,8 @@ const BitcoinInvestmentCard = () => {
             name="years"
             id="years"
             className="text-secondary border-b-2 border-secondary border-dashed"
+            value={selectedYears}
+            onChange={(e) => setSelectedYears(e.target.value)}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -61,13 +67,13 @@ const BitcoinInvestmentCard = () => {
       </div>
       <div className="text-center border-t-2 w-full mt-10 border-dashed">
         <div className="text-4xl  text-primary font-bold mt-4 pt-10">
-          $ 40,000
+          ${(selectedYears * amount * (getPercentageChange(1) + 100)) / 100}
         </div>
         <h3 className="text-2xl font-light leading-snug ">
           As your current investment value
         </h3>
         <h4 className="text-xl text-gray-400 leading-snug mt-2">
-          by investing $ 20,000
+          by investing ${selectedYears * amount}
         </h4>
       </div>
     </div>

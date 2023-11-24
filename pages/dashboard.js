@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const getPercentageChange = async (duration) => {
+export const getPercentageChange = async (duration) => {
   const date = new Date();
   if (duration == 6) {
     date.setMonth(date.getMonth() - duration);
