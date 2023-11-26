@@ -5,6 +5,8 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import { getPercentageChange } from "./dashboard";
 
+const priceChange = await getPercentageChange(1);
+
 const BitcoinInvestmentCard = () => {
   const [amount, setAmount] = useState("0");
   const [selectedYears, setSelectedYears] = useState("0");
@@ -67,7 +69,7 @@ const BitcoinInvestmentCard = () => {
       </div>
       <div className="text-center border-t-2 w-full mt-10 border-dashed">
         <div className="text-4xl  text-primary font-bold mt-4 pt-10">
-          ${(selectedYears * amount * (getPercentageChange(1) + 100)) / 100}
+          ${(selectedYears * amount * (priceChange + 100)) / 100}
         </div>
         <h3 className="text-2xl font-light leading-snug ">
           As your current investment value

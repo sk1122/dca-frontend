@@ -1,32 +1,18 @@
+import { da } from "date-fns/locale";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const getPercentageChange = async (duration) => {
-  const date = new Date();
-  if (duration == 6) {
-    date.setMonth(date.getMonth() - duration);
-  } else {
-    date.setFullYear(date.getFullYear() - duration);
-  }
-
-  const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-  const formattedDate = date
-    .toLocaleDateString("en-GB", options)
-    .replace(/\//g, "-");
-
-  const data = await fetch(
-    `https://api.coingecko.com/api/v3/coins/ethereum/history?date=${formattedDate}`
+  const data = await fetch("http://localhost:3000/api/get-token");
+  let response = await data.json();
+  const filteredResponse = response.filter((item) =>
+    item.id.startsWith(`ETH-${duration}`)
   );
-  let prevPriceresponse = await data.json();
-  const prevPrice = prevPriceresponse.market_data?.current_price.usd;
 
-  const currentData = await fetch(
-    "https://api.coingecko.com/api/v3/coins/ethereum"
-  );
-  let currentPriceresponse = await currentData.json();
+  const currentPrice = response[0].price;
 
-  const currentPrice = currentPriceresponse.market_data?.current_price.usd;
+  const prevPrice = filteredResponse[0].price;
 
   return Math.floor((100 * currentPrice) / prevPrice - 100);
 };
