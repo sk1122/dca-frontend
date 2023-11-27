@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BitcoinInvestmentCard = () => {
   const [amount, setAmount] = useState("0");
@@ -20,8 +20,17 @@ const BitcoinInvestmentCard = () => {
 
     const prevPrice = filteredResponse[0].price;
 
-    setPercentage(Math.floor((100 * currentPrice) / prevPrice - 100));
+    return Math.floor((100 * currentPrice) / prevPrice - 100);
   };
+
+  const getPriceChange = async () => {
+    setPercentage(
+      (selectedYears * amount * ((await getPercentageChange(1)) + 100)) / 100
+    );
+  };
+  useEffect(() => {
+    getPriceChange();
+  }, [selectedYears, amount]);
 
   return (
     <div className="flex flex-col items-center justify-center w-1/2 h-full  py-16 bg-white rounded-2xl shadow-lg ">
@@ -82,7 +91,7 @@ const BitcoinInvestmentCard = () => {
       </div>
       <div className="text-center border-t-2 w-full mt-10 border-dashed">
         <div className="text-4xl  text-primary font-bold mt-4 pt-10">
-          ${(selectedYears * amount * (percentage + 100)) / 100}
+          ${percentage}
         </div>
         <h3 className="text-2xl font-light leading-snug ">
           As your current investment value
