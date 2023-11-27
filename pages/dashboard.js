@@ -1,35 +1,6 @@
-import { da } from "date-fns/locale";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
-
-export const getPercentageChange = async (duration) => {
-  const NEXT_URL =
-    process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
-  const data = await fetch(`${NEXT_URL}/api/get-token`);
-  let response = await data.json();
-  const filteredResponse = response.filter((item) =>
-    item.id.startsWith(`ETH-${duration}`)
-  );
-
-  const currentPrice = response[0].price;
-
-  const prevPrice = filteredResponse[0].price;
-
-  return Math.floor((100 * currentPrice) / prevPrice - 100);
-};
-
-export const dummyData = [
-  {
-    id: 1,
-    name: "ETH",
-    "6M": await getPercentageChange(6),
-    "1YR": await getPercentageChange(1),
-    "3YR": await getPercentageChange(3),
-    "5YR": await getPercentageChange(5),
-    icon: "/images/eth.png",
-  },
-];
+import { useEffect, useState } from "react";
 
 const DataComponent = ({ item }) => {
   const router = useRouter();
@@ -88,6 +59,37 @@ const DataComponent = ({ item }) => {
 };
 
 const Dashboard = () => {
+  const getPercentageChange = async (duration) => {
+    const data = await fetch("/api/get-token");
+    let response = await data.json();
+    const filteredResponse = response.filter((item) =>
+      item.id.startsWith(`ETH-${duration}`)
+    );
+
+    const currentPrice = response[0].price;
+
+    const prevPrice = filteredResponse[0].price;
+
+    return Math.floor((100 * currentPrice) / prevPrice - 100);
+  };
+  const [percentage, setPercentage] = useState([]);
+  const getPercentage = async () => {
+    const dummyData = [
+      {
+        id: 1,
+        name: "ETH",
+        "6M": await getPercentageChange(6),
+        "1YR": await getPercentageChange(1),
+        "3YR": await getPercentageChange(3),
+        "5YR": await getPercentageChange(5),
+        icon: "/images/eth.png",
+      },
+    ];
+    setPercentage(dummyData);
+  };
+  useEffect(() => {
+    getPercentage();
+  }, []);
   return (
     <div className=" text-center">
       <div className="w-9/12 text-center py-32 mx-auto">
@@ -104,7 +106,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {dummyData.map((item, idx) => (
+            {percentage.map((item, idx) => (
               <DataComponent key={idx} item={item} />
             ))}
           </tbody>

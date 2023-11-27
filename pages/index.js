@@ -3,13 +3,26 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { useState } from "react";
-import { getPercentageChange } from "./dashboard";
-
-const priceChange = await getPercentageChange(1);
 
 const BitcoinInvestmentCard = () => {
   const [amount, setAmount] = useState("0");
   const [selectedYears, setSelectedYears] = useState("0");
+  const [percentage, setPercentage] = useState("0");
+
+  const getPercentageChange = async (duration) => {
+    const data = await fetch("/api/get-token");
+    let response = await data.json();
+    const filteredResponse = response.filter((item) =>
+      item.id.startsWith(`ETH-${duration}`)
+    );
+
+    const currentPrice = response[0].price;
+
+    const prevPrice = filteredResponse[0].price;
+
+    setPercentage(Math.floor((100 * currentPrice) / prevPrice - 100));
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-1/2 h-full  py-16 bg-white rounded-2xl shadow-lg ">
       <div>
@@ -69,7 +82,7 @@ const BitcoinInvestmentCard = () => {
       </div>
       <div className="text-center border-t-2 w-full mt-10 border-dashed">
         <div className="text-4xl  text-primary font-bold mt-4 pt-10">
-          ${(selectedYears * amount * (priceChange + 100)) / 100}
+          ${(selectedYears * amount * (percentage + 100)) / 100}
         </div>
         <h3 className="text-2xl font-light leading-snug ">
           As your current investment value
