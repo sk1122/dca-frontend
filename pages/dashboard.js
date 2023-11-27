@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const getPercentageChange = async (duration) => {
-  const data = await fetch("http://localhost:3000/api/get-token");
+  const NEXT_URL =
+    process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
+  const data = await fetch(`${NEXT_URL}/api/get-token`);
   let response = await data.json();
   const filteredResponse = response.filter((item) =>
     item.id.startsWith(`ETH-${duration}`)
