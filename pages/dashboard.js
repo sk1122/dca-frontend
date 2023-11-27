@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const DataComponent = ({ item }) => {
   const router = useRouter();
@@ -60,13 +61,13 @@ const DataComponent = ({ item }) => {
 
 const Dashboard = () => {
   const getPercentageChange = async (duration) => {
-    const data = await fetch("/api/get-token");
-    let response = await data.json();
-    const filteredResponse = response.filter((item) =>
+    const response = await axios.get("/api/get-token");
+
+    const filteredResponse = response.data.filter((item) =>
       item.id.startsWith(`ETH-${duration}`)
     );
 
-    const currentPrice = response[0].price;
+    const currentPrice = response.data[0].price;
 
     const prevPrice = filteredResponse[0].price;
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const BitcoinInvestmentCard = () => {
   const [amount, setAmount] = useState("0");
@@ -10,13 +11,13 @@ const BitcoinInvestmentCard = () => {
   const [percentage, setPercentage] = useState("0");
 
   const getPercentageChange = async (duration) => {
-    const data = await fetch("/api/get-token");
-    let response = await data.json();
-    const filteredResponse = response.filter((item) =>
+    const response = await axios.get("/api/get-token");
+
+    const filteredResponse = response.data.filter((item) =>
       item.id.startsWith(`ETH-${duration}`)
     );
 
-    const currentPrice = response[0].price;
+    const currentPrice = response.data[0].price;
 
     const prevPrice = filteredResponse[0].price;
 
